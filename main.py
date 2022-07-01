@@ -1,25 +1,26 @@
-import cv2
-import pytesseract
-from translate import Translator
+import pywebio
+from pywebio import start_server
+from pywebio.output import put_text, put_image, put_table, use_scope
+from getText import get_text
+from getText import translate
 
 
-pytesseract.pytesseract.tesseract_cmd = 'D:\\Programming\\Tesseract for textFromphotos\\tesseract.exe'
+async def main():
+
+    while True:
+        file = await pywebio.input.file_upload("Upload a file")
+        open('D:\\Programming\\Python\\textFromPhoto\\imgs\\' + file['filename'], 'wb').write(file['content'])
+        path = 'D:\\Programming\\Python\\textFromPhoto\\imgs\\' + file['filename']
+
+        text = get_text(path)
+        new_text = translate(text)
+
+        with use_scope('results', clear=True):
+            put_table([
+                [put_text(new_text, position=1)],
+                [put_image(file['content'], position=1)]
+            ])
 
 
-
-img = cv2.imread('imgs\img1.jpg')
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-config = r'--oem 3 --psm 6'
-text = pytesseract.image_to_string(img, config=config)
-#print(text)
-
-translator = Translator(to_lang="ru")
-new=translator.translate(text)
-print(new)
-
-cv2.imshow('Result', img)
-cv2.waitKey(0)
-
-
-
+if __name__ == "__main__":
+    start_server(main, debug=True, port=8080, cdn=False)

@@ -17,7 +17,7 @@ def get_text(img_src):
 
 
 def translate(text):
-    translator = Translator(to_lang="ru")
+    translator = Translator(to_lang="eng")
     translated_text = translator.translate(text)
     #print(translated_text)
     return translated_text

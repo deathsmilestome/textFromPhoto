@@ -1,3 +1,5 @@
+import os
+
 import pywebio
 from pywebio import start_server
 from pywebio.output import put_text, put_image, put_table, use_scope
@@ -13,6 +15,7 @@ async def main():
         path = 'D:\\Programming\\Python\\textFromPhoto\\imgs\\' + file['filename']
 
         text = get_text(path)
+        os.remove(path)
         new_text = translate(text)
 
         with use_scope('results', clear=True):

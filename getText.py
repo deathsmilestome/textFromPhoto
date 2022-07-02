@@ -10,6 +10,8 @@ def get_text(img_src):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     config = r'--oem 3 --psm 6'
     text = pytesseract.image_to_string(img, config=config)
+    if len(text) > 500:
+        return "-%-"
     # print(text)
     #cv2.imshow('Result', img)
     #cv2.waitKey(0)
@@ -17,7 +19,9 @@ def get_text(img_src):
 
 
 def translate(text):
-    translator = Translator(to_lang="eng")
+    if text == "-%-":
+        return "Chars > 500"
+    translator = Translator(to_lang="ru")
     translated_text = translator.translate(text)
     #print(translated_text)
     return translated_text

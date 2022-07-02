@@ -17,6 +17,7 @@ async def main():
 
         with use_scope('results', clear=True):
             put_table([
+                [put_text(text, position=1)],
                 [put_text(new_text, position=1)],
                 [put_image(file['content'], position=1)]
             ])

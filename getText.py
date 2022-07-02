@@ -11,7 +11,7 @@ def get_text(img_src):
     config = r'--oem 3 --psm 6'
     text = pytesseract.image_to_string(img, config=config)
     if len(text) > 500:
-        return "-%-"
+        return "-E-"
     # print(text)
     #cv2.imshow('Result', img)
     #cv2.waitKey(0)
@@ -19,7 +19,7 @@ def get_text(img_src):
 
 
 def translate(text):
-    if text == "-%-":
+    if text == "-E-":
         return "Chars > 500"
     translator = Translator(to_lang="ru")
     translated_text = translator.translate(text)
